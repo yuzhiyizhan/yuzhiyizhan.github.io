@@ -12,9 +12,11 @@ description: "0基础菜狗的个人博客，分享技术文章"
 #
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://github.com/yuzhiyizhan/yuzhiyizhan.github.io/images/ikun.png
+avatar: https://raw.githubusercontent.com/yuzhiyizhan/yuzhiyizhan.github.io/main/images/ikun.png
 # 你的favicon（出现在浏览器tab上）图片URL，建议使用较小(64px × 64px)的图片
-favicon: https://github.com/yuzhiyizhan/yuzhiyizhan.github.io/images/caigou/favicon-32x32.png
+favicon: https://raw.githubusercontent.com/yuzhiyizhan/yuzhiyizhan.github.io/main/images/caigou/favicon-32x32.png
+
+
 
 # Tabs in header. There are 'Blog', 'About', 'Archive', 'Tags'
 # and URL Link(e.g. 'Theme' tab below) tabs. If you don't need one, just delete
