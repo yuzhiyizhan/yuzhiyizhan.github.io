@@ -30,6 +30,8 @@ navigation:
     url: /archive
   - name: 标签
     url: /tags
+  - name: 测试
+    url: /test
 
 # Pagination
 paginate: 8

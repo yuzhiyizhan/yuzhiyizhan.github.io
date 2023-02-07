@@ -1,0 +1,42 @@
+---
+layout: page
+title: 测试
+permalink: /test/
+---
+<script src="/js/jquery.min.js"></script>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>base64 编码/解码：</h2>
+    <textarea placeholder="这里放入待解码/编码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+              class="info"></textarea>
+    <div class="button">
+        <button class="encode  btn btn-default">base64编码</button>
+        <button class="decode btn btn-default">base64解码</button>
+    </div>
+    <script>
+        debugger
+        $('.encode').click(function () {
+            var mes = $('.info').val();
+            $('.info').val(window.btoa(mes))
+        });
+
+        $('.decode').click(function () {
+            try {
+                var mes = $('.info').val();
+                $('.info').val(window.atob(mes))
+            } catch (e) {
+                alert('解码失败，这不是一个正常编码后的base64')
+            }
+        })
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
