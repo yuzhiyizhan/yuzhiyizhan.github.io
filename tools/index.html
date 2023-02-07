@@ -1,0 +1,81 @@
+---
+layout: page
+title: 工具
+permalink: /tools/
+---
+<script src="/js/jquery.min.js"></script>
+<script src="/js/md5.js"></script>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>base64 编码/解码：</h2>
+    <textarea placeholder="这里放入待解码/编码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+              class="info"></textarea>
+    <div class="button">
+        <button class="encode  btn btn-default">base64编码</button>
+        <button class="decode btn btn-default">base64解码</button>
+    </div>
+    <script>
+        $('.encode').click(function () {
+            var mes = $('.info').val();
+            $('.info').val(window.btoa(mes))
+        });
+
+        $('.decode').click(function () {
+            try {
+                var mes = $('.info').val();
+                $('.info').val(window.atob(mes))
+            } catch (e) {
+                alert('解码失败，这不是一个正常编码后的base64')
+            }
+        })
+    </script>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>md5 编码：</h2>
+    <textarea placeholder="这里放入待解码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+              class="md5_info"></textarea>
+    <div class="button">
+        <button class="md5_encode  btn btn-default">md5编码</button>
+    </div>
+    <script>
+        $('.md5_encode').click(function () {
+            var mes =  $('.md5_info').val();
+            if (mes != null){
+                $('.table').css('display', '');
+                $('.sm16').text(mes.MD5());
+                $('.big16').text(mes.MD5().toUpperCase());
+                $('.sm32').text(mes.MD5(32));
+                $('.big32').text(mes.MD5(32).toUpperCase());
+            }
+        });
+    </script>
+    <table class="table" style="display: none">
+        <tbody>
+        <tr>
+            <td>16位小</td>
+            <td class="sm16">*</td>
+        </tr>
+        <tr>
+            <td>16位大</td>
+            <td class="big16">*</td>
+        </tr><tr>
+            <td>32位小</td>
+            <td class="sm32">*</td>
+        </tr>
+
+        <tr>
+            <td>32位大</td>
+            <td class="big32">*</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
