@@ -4,70 +4,130 @@ title: 工具
 permalink: /tools/
 ---
 <script src="/js/jquery.min.js"></script>
-<script src="/js/md5.js"></script>
+<script src="/js/crypto-js.min.js"></script>
+<!--<script src="/js/md5.js"></script>-->
+
+
 
 <div style="display: inline-block; margin-left: 20%">
     <h2>base64 编码/解码：</h2>
     <textarea placeholder="这里放入待解码/编码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
               class="info"></textarea>
     <div class="button">
-        <button class="encode  btn btn-default">base64编码</button>
+        <button class="encode btn btn-default">base64编码</button>
         <button class="decode btn btn-default">base64解码</button>
     </div>
     <script>
         $('.encode').click(function () {
-            var mes = $('.info').val();
-            $('.info').val(window.btoa(mes))
+            let mes = $('.info').val();
+            if (mes != null) {
+                $('.base_table').css('display', '');
+                $('.base').text(window.btoa(mes))
+            }
         });
 
         $('.decode').click(function () {
+            let mes = $('.info').val();
             try {
-                var mes = $('.info').val();
-                $('.info').val(window.atob(mes))
+                if (mes != null) {
+                    $('.base_table').css('display', '');
+                    $('.base').text(window.atob(mes))
+                }
             } catch (e) {
                 alert('解码失败，这不是一个正常编码后的base64')
             }
         })
     </script>
+    <table class="base_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="base">*</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 
 <div style="display: inline-block; margin-left: 20%">
-    <h2>md5 编码：</h2>
-    <textarea placeholder="这里放入待解码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
-              class="md5_info"></textarea>
+    <h2>MD5，SHA1等 编码：</h2>
+    <textarea placeholder="这里放入待加密内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+              class="md5_info"></textarea><br>
+    <input class="input_key" placeholder="密钥,非必填">
     <div class="button">
-        <button class="md5_encode  btn btn-default">md5编码</button>
+        <button class="md5_encode  btn btn-default">加密</button>
     </div>
     <script>
         $('.md5_encode').click(function () {
-            var mes =  $('.md5_info').val();
-            if (mes != null){
+            let mes = $('.md5_info').val();
+            let key = $('.input_key').val()
+            if (mes != null) {
                 $('.table').css('display', '');
-                $('.sm16').text(mes.MD5());
-                $('.big16').text(mes.MD5().toUpperCase());
-                $('.sm32').text(mes.MD5(32));
-                $('.big32').text(mes.MD5(32).toUpperCase());
+                $('.MD5').text(CryptoJS.MD5(mes))
+                $('.SHA1').text(CryptoJS.SHA1(mes))
+                $('.SHA224').text(CryptoJS.SHA224(mes))
+                $('.SHA256').text(CryptoJS.SHA256(mes))
+                $('.SHA384').text(CryptoJS.SHA384(mes))
+                $('.SHA512').text(CryptoJS.SHA512(mes))
+                $('.Hmac-MD5').text(CryptoJS.HmacMD5(mes,key))
+                $('.Hmac-SHA1').text(CryptoJS.HmacSHA1(mes,key))
+                $('.Hmac-SHA224').text(CryptoJS.HmacSHA224(mes,key))
+                $('.Hmac-SHA256').text(CryptoJS.HmacSHA256(mes,key))
+                $('.Hmac-SHA384').text(CryptoJS.HmacSHA384(mes,key))
+                $('.Hmac-SHA512').text(CryptoJS.HmacSHA512(mes,key))
             }
         });
     </script>
     <table class="table" style="display: none">
         <tbody>
         <tr>
-            <td>16位小</td>
-            <td class="sm16">*</td>
+            <td>MD5</td>
+            <td class="MD5">*</td>
         </tr>
         <tr>
-            <td>16位大</td>
-            <td class="big16">*</td>
-        </tr><tr>
-            <td>32位小</td>
-            <td class="sm32">*</td>
+            <td>SHA1</td>
+            <td class="SHA1">*</td>
+        </tr>
+        <tr>
+            <td>SHA224</td>
+            <td class="SHA224">*</td>
         </tr>
 
         <tr>
-            <td>32位大</td>
-            <td class="big32">*</td>
+            <td>SHA256</td>
+            <td class="SHA256">*</td>
+        </tr>
+        <tr>
+            <td>SHA384</td>
+            <td class="SHA384">*</td>
+        </tr>
+        <tr>
+            <td>SHA512</td>
+            <td class="SHA512">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-MD5</td>
+            <td class="Hmac-MD5">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-SHA1</td>
+            <td class="Hmac-SHA1">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-SHA224</td>
+            <td class="Hmac-SHA224">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-SHA256</td>
+            <td class="Hmac-SHA256">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-SHA384</td>
+            <td class="Hmac-SHA384">*</td>
+        </tr>
+        <tr>
+            <td>Hmac-SHA512</td>
+            <td class="Hmac-SHA512">*</td>
         </tr>
         </tbody>
     </table>
