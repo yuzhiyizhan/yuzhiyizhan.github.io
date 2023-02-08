@@ -3,6 +3,7 @@ layout: page
 title: 工具
 permalink: /tools/
 ---
+
 <script src="/js/jquery.min.js"></script>
 <script src="/js/crypto-js.min.js"></script>
 <script src="/js/jsmin.js"></script>
@@ -145,6 +146,7 @@ permalink: /tools/
             let mes = $('.ys').val();
             if (mes != null) {
                 $('.base_table_ys').css('display', '');
+                $('.copyButton').css('display', '');
                 $('.base_ys').text(ltrim(jsmin("", mes, "3")))
             }
         });
@@ -154,11 +156,23 @@ permalink: /tools/
         <tr>
             <td>结果</td>
             <td class="base_ys">*</td>
+            <button id="copyButton" class="copyButton" style="display: none">
+                复制
+            </button>
+            <script>
+                $('.copyButton').click(function () {
+                    const textarea = document.createElement('textarea');
+                    let mes = $('.base_ys')[0].innerText
+                    textarea.value = mes
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('复制成功！');
+                })
+            </script>
         </tr>
         </tbody>
     </table>
 </div>
-
-
-
 

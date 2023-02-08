@@ -32,6 +32,9 @@ navigation:
     url: /tags
   - name: 工具
     url: /tools
+  - name: V神解混淆
+    url: /v
+
 
 # Pagination
 paginate: 8
