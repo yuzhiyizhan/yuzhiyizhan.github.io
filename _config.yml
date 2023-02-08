@@ -34,6 +34,8 @@ navigation:
     url: /tools
   - name: V神解混淆
     url: /v
+  - name: V神混淆
+    url: /v_ob
 
 
 # Pagination
