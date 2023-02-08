@@ -5,8 +5,7 @@ permalink: /tools/
 ---
 <script src="/js/jquery.min.js"></script>
 <script src="/js/crypto-js.min.js"></script>
-<!--<script src="/js/md5.js"></script>-->
-
+<script src="/js/jsmin.js"></script>
 
 
 <div style="display: inline-block; margin-left: 20%">
@@ -69,12 +68,12 @@ permalink: /tools/
                 $('.SHA256').text(CryptoJS.SHA256(mes))
                 $('.SHA384').text(CryptoJS.SHA384(mes))
                 $('.SHA512').text(CryptoJS.SHA512(mes))
-                $('.Hmac-MD5').text(CryptoJS.HmacMD5(mes,key))
-                $('.Hmac-SHA1').text(CryptoJS.HmacSHA1(mes,key))
-                $('.Hmac-SHA224').text(CryptoJS.HmacSHA224(mes,key))
-                $('.Hmac-SHA256').text(CryptoJS.HmacSHA256(mes,key))
-                $('.Hmac-SHA384').text(CryptoJS.HmacSHA384(mes,key))
-                $('.Hmac-SHA512').text(CryptoJS.HmacSHA512(mes,key))
+                $('.Hmac-MD5').text(CryptoJS.HmacMD5(mes, key))
+                $('.Hmac-SHA1').text(CryptoJS.HmacSHA1(mes, key))
+                $('.Hmac-SHA224').text(CryptoJS.HmacSHA224(mes, key))
+                $('.Hmac-SHA256').text(CryptoJS.HmacSHA256(mes, key))
+                $('.Hmac-SHA384').text(CryptoJS.HmacSHA384(mes, key))
+                $('.Hmac-SHA512').text(CryptoJS.HmacSHA512(mes, key))
             }
         });
     </script>
@@ -134,7 +133,31 @@ permalink: /tools/
 </div>
 
 
-
+<div style="display: inline-block; margin-left: 20%">
+    <h2>压缩JS：</h2>
+    <textarea placeholder="这里放入待压缩JS" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+              class="ys"></textarea>
+    <div class="button">
+        <button class="ys_b btn btn-default">压缩</button>
+    </div>
+    <script>
+        $('.ys_b').click(function () {
+            let mes = $('.ys').val();
+            if (mes != null) {
+                $('.base_table_ys').css('display', '');
+                $('.base_ys').text(ltrim(jsmin("", mes, "3")))
+            }
+        });
+    </script>
+    <table class="base_table_ys" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="base_ys">*</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 
 
