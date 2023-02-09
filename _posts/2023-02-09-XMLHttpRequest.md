@@ -21,4 +21,4 @@ xhr.onreadystatechange = function() {
 xhr.send()
 ```
 
-要在www.baidu.com下才能请求
+要在www.baidu.com下才能请求(不能跨域)
