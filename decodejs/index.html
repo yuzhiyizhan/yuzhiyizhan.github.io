@@ -1,0 +1,174 @@
+---
+layout: page
+title: js解混淆
+permalink: /decodejs/
+---
+<style>
+    @property --d {
+        syntax: '<angle>';
+        inherits: true;
+        initial-value: 0deg;
+    }
+    button {
+        /* 相对定位 */
+        position: relative;
+        /*width: 400px;*/
+        /*height: 100px;*/
+        /*line-height: 100px;*/
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+
+        color: #fff;
+        /* 渐变背景 */
+        background: linear-gradient(to right, #03a9f4, #f441a5, #ffeb3b, #09a8f4);
+        /* 背景渐变色大小 */
+        background-size: 400%;
+        /* 圆角 */
+        border-radius: 50px;
+        z-index: 1;
+    }
+
+    /* 发光效果 */
+    button::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        bottom: -5px;
+        right: -5px;
+        /* 渐变背景 */
+
+        /* 背景渐变色大小 */
+        background-size: 400%;
+        /* 圆角 */
+        border-radius: 50px;
+        /* 位于按钮之下 */
+        z-index: -1;
+        /* 设置模糊度 显示发光效果 */
+        filter: blur(20px);
+    }
+
+    /* 鼠标移入执行动画 */
+    button:hover {
+        /* 动画：名称 时间 infinite是无限次播放 */
+        animation: streamer 8s infinite;
+    }
+
+    button:hover::before {
+        animation: streamer 8s infinite;
+    }
+
+    /* 接下来定义动画 */
+    @keyframes streamer {
+        100% {
+            /* 背景位置 */
+            background-position: -400% 0;
+        }
+    }
+</style>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/crypto-js.min.js"></script>
+<script src="/js/jsmin.js"></script>
+<script async src="/js/tools/babel_asttool.js"></script>
+<script src="/js/decodejs.js"></script>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>将js中字符解码为可读行较高的字符：</h2>
+    <pre>
+    处理前：
+    var a='\x73\x70\x6c' + '\x69\x74';
+    处理后：
+    var a = "spl" + "it";
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="info"></textarea>
+    <div class="button">
+        <button class="decry_str btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.decry_str').click(function () {
+            let mes = $('.info').val();
+            if (mes != null) {
+                $('.base_table').css('display', '');
+                $('.copy_decry_str').css('display', '');
+                $('.base').text(decry_str(mes))
+            }
+        });
+    </script>
+    <table class="base_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="base">*</td>
+        </tr>
+        <button class="copy_decry_str" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_decry_str').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.base')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>将拆分的对象合并：</h2>
+    <pre>
+    处理前：
+        let a={};
+        a['b']=1;
+    处理后：
+        let a{'b':1};
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="merge_info"></textarea>
+    <div class="button">
+        <button class="merge btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.merge').click(function () {
+            let mes = $('.merge_info').val();
+            if (mes != null) {
+                $('.merge_table').css('display', '');
+                $('.copy_merge').css('display', '');
+                $('.merge_text').text(merge_obj(mes))
+            }
+        });
+    </script>
+    <table class="merge_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="merge_text">*</td>
+        </tr>
+        <button class="copy_merge" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_merge').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.merge_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+

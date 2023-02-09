@@ -32,6 +32,8 @@ navigation:
     url: /tags
   - name: 工具
     url: /tools
+  - name: js解混淆
+    url: /decodejs
   - name: V神解混淆
     url: /v
   - name: V神混淆
