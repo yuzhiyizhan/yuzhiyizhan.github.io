@@ -4,12 +4,12 @@ title: 工具
 permalink: /tools/
 ---
 <style>
-    @property --d{
+    @property --d {
         syntax: '<angle>';
         inherits: true;
         initial-value: 0deg;
     }
-    button{
+    button {
         /* 相对定位 */
         position: relative;
         /*width: 400px;*/
@@ -21,15 +21,16 @@ permalink: /tools/
 
         color: #fff;
         /* 渐变背景 */
-        background: linear-gradient(to right,#03a9f4,#f441a5,#ffeb3b,#09a8f4);
+        background: linear-gradient(to right, #03a9f4, #f441a5, #ffeb3b, #09a8f4);
         /* 背景渐变色大小 */
         background-size: 400%;
         /* 圆角 */
         border-radius: 50px;
         z-index: 1;
     }
+
     /* 发光效果 */
-    button::before{
+    button::before {
         content: "";
         position: absolute;
         top: -5px;
@@ -47,17 +48,20 @@ permalink: /tools/
         /* 设置模糊度 显示发光效果 */
         filter: blur(20px);
     }
+
     /* 鼠标移入执行动画 */
-    button:hover{
+    button:hover {
         /* 动画：名称 时间 infinite是无限次播放 */
         animation: streamer 8s infinite;
     }
-    button:hover::before{
+
+    button:hover::before {
         animation: streamer 8s infinite;
     }
+
     /* 接下来定义动画 */
-    @keyframes streamer{
-        100%{
+    @keyframes streamer {
+        100% {
             /* 背景位置 */
             background-position: -400% 0;
         }
@@ -69,7 +73,7 @@ permalink: /tools/
 
 <div style="display: inline-block; margin-left: 20%">
     <h2>base64 编码/解码：</h2>
-    <textarea placeholder="这里放入待解码/编码内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+    <textarea placeholder="这里放入待解码/编码内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
               class="info"></textarea>
     <div class="button">
         <button class="encode btn btn-default">base64编码</button>
@@ -108,8 +112,51 @@ permalink: /tools/
 
 
 <div style="display: inline-block; margin-left: 20%">
+    <h2>图片转base64</h2>
+    <input type="file" onchange="getBase64(this.files[0])"><br>
+    <script>
+        function getBase64(file) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            $('.base642img_table').css('display', '');
+            $('.copybase64').css('display', '');
+            reader.onload = function () {
+                $('.base642img').text(reader.result)
+            };
+            reader.onerror = function (error) {
+                $('.base642img').text(error)
+            };
+        }
+    </script>
+    <table class="base642img_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="base642img">*</td>
+            <button id="copybase64" class="copybase64" style="display: none">
+                复制
+            </button>
+            <script>
+                $('.copybase64').click(function () {
+                    const textarea = document.createElement('textarea');
+                    let mes = $('.base642img')[0].innerText
+                    textarea.value = mes
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('复制成功！');
+                })
+            </script>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
     <h2>MD5，SHA1等 编码：</h2>
-    <textarea placeholder="这里放入待加密内容" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+    <textarea placeholder="这里放入待加密内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
               class="md5_info"></textarea><br>
     <input class="input_key" placeholder="密钥,非必填">
     <div class="button">
@@ -194,7 +241,7 @@ permalink: /tools/
 
 <div style="display: inline-block; margin-left: 20%">
     <h2>压缩JS：</h2>
-    <textarea placeholder="这里放入待压缩JS" name="reworkmes" cols="80" rows="8" style="OVERFLOW:   hidden"
+    <textarea placeholder="这里放入待压缩JS" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
               class="ys"></textarea>
     <div class="button">
         <button class="ys_b btn btn-default">压缩</button>
@@ -232,5 +279,19 @@ permalink: /tools/
         </tr>
         </tbody>
     </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>base64转图片</h2>
+    <input type="text" id="base64Input">
+    <button onclick="displayImage()">显示图片</button>
+    <br><br>
+    <img id="display-image"/>
+    <script>
+        function displayImage() {
+            var base64 = document.getElementById("base64Input").value;
+            document.getElementById("display-image").src = base64;
+        }
+    </script>
 </div>
 
