@@ -59,3 +59,31 @@ function merge_obj(jscode){
     let {code} = generator(ast,opts = {jsescOption:{"minimal":true}})
     return code
 }
+
+
+function Mem(jscode) {
+    let ast = parser.parse(jscode)
+    function add_Mem_str(path) {
+        let node = path.node;
+        if (node.computed && t.isBinaryExpression(node.property) && node.property.operator == '+') {
+            let BinNode = node.property;//属性节点
+            let tmpast = parser.parse(generator(BinNode).code);
+            let addstr='';
+            traverse(tmpast, {
+                BinaryExpression: {
+                    exit: function (_p) {
+                        if (t.isStringLiteral(_p.node.right) && t.isStringLiteral(_p.node.left)) {//二进制表达式左右有一个类型为字符型
+                            _p.replaceWith(t.StringLiteral(eval(generator(_p.node).code)))      // 值替换节点
+                        }
+                        addstr=_p.toString();
+                    }
+
+                }
+            })
+            node.property=t.Identifier(addstr);
+        }
+    }
+    traverse(ast, {MemberExpression: {exit: [add_Mem_str]},});
+    let {code} = generator(ast,opts = {jsescOption:{"minimal":true}})
+    return code
+}

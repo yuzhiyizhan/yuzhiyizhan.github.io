@@ -172,3 +172,49 @@ permalink: /decodejs/
     </table>
 </div>
 
+<div style="display: inline-block; margin-left: 20%">
+    <h2>成员表达式中的字符合并：</h2>
+    <pre>
+    处理前：a['a'+'b=']=45;
+    处理后：a['ab=']=45;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="Mem_info"></textarea>
+    <div class="button">
+        <button class="Mem btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.Mem').click(function () {
+            let mes = $('.Mem_info').val();
+            if (mes != null) {
+                $('.Mem_table').css('display', '');
+                $('.copy_Mem').css('display', '');
+                $('.Mem_text').text(Mem(mes))
+            }
+        });
+    </script>
+    <table class="Mem_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="Mem_text">*</td>
+        </tr>
+        <button class="copy_Mem" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_Mem').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.Mem_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
