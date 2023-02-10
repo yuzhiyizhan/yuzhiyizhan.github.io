@@ -78,9 +78,9 @@ permalink: /decodejs/
     <h2>将js中字符解码为可读行较高的字符：</h2>
     <pre>
     处理前：
-    var a='\x73\x70\x6c' + '\x69\x74';
+        var a='\x73\x70\x6c' + '\x69\x74';
     处理后：
-    var a = "spl" + "it";
+        var a = "spl" + "it";
     </pre>
     <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
               class="info"></textarea>
@@ -121,7 +121,6 @@ permalink: /decodejs/
         </tbody>
     </table>
 </div>
-
 
 <div style="display: inline-block; margin-left: 20%">
     <h2>将拆分的对象合并：</h2>
@@ -217,4 +216,170 @@ permalink: /decodejs/
         </tbody>
     </table>
 </div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>常量计算：</h2>
+    <pre>
+    处理前：
+        var a = !![];
+        var b = "abc" == "bcd";
+        var c = 1 << 3 | 2;
+        var d = parseInt("5" + "0")
+    处理后：
+        var a = true;
+        var b = false;
+        var c = 10;
+        var d = 50;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="eval_constant_info"></textarea>
+    <div class="button">
+        <button class="eval_constant btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.eval_constant').click(function () {
+            let mes = $('.eval_constant_info').val();
+            if (mes != null) {
+                $('.eval_constant_table').css('display', '');
+                $('.copy_eval_constant').css('display', '');
+                $('.eval_constant_text').text(eval_constant(mes))
+            }
+        });
+    </script>
+    <table class="eval_constant_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="eval_constant_text">*</td>
+        </tr>
+        <button class="copy_eval_constant" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_eval_constant').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.eval_constant_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>Return函数简化：</h2>
+    <pre>
+    处理前：
+        function bD2(cu, cv) {
+          return cu||cv;
+        }
+        b=bD2(1,2);
+    处理后：
+        b=1||2;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="FunToRetu_info"></textarea>
+    <div class="button">
+        <button class="FunToRetu btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.FunToRetu').click(function () {
+            let mes = $('.FunToRetu_info').val();
+            if (mes != null) {
+                $('.FunToRetu_table').css('display', '');
+                $('.copy_FunToRetu').css('display', '');
+                $('.FunToRetu_text').text(FunToRetu(mes))
+            }
+        });
+    </script>
+    <table class="FunToRetu_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="FunToRetu_text">*</td>
+        </tr>
+        <button class="copy_FunToRetu" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_FunToRetu').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.eval_FunToRetu')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>死代码删减：</h2>
+    <pre>
+    处理前：
+        var _0x355406 = function () {
+            let m;
+            if (false) {
+                m = 1;
+            } else {
+                m = 2;
+            }
+            return m;
+        };
+    处理后：
+        var _0x355406 = function () {
+          let m;
+          m = 2;
+          return m;
+        };
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="delete_false_info"></textarea>
+    <div class="button">
+        <button class="delete_false btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.delete_false').click(function () {
+            let mes = $('.delete_false_info').val();
+            if (mes != null) {
+                $('.delete_false_table').css('display', '');
+                $('.copy_delete_false').css('display', '');
+                $('.delete_false_text').text(delete_false(mes))
+            }
+        });
+    </script>
+    <table class="delete_false_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="delete_false_text">*</td>
+        </tr>
+        <button class="copy_delete_false" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_delete_false').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.eval_delete_false')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
 
