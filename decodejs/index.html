@@ -309,7 +309,7 @@ permalink: /decodejs/
         <script>
             $('.copy_FunToRetu').click(function () {
                 const textarea = document.createElement('textarea');
-                let mes = $('.eval_FunToRetu')[0].innerText
+                let mes = $('.FunToRetu_text')[0].innerText
                 textarea.value = mes
                 document.body.appendChild(textarea);
                 textarea.select();
@@ -369,7 +369,57 @@ permalink: /decodejs/
         <script>
             $('.copy_delete_false').click(function () {
                 const textarea = document.createElement('textarea');
-                let mes = $('.eval_delete_false')[0].innerText
+                let mes = $('.delete_false_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>数组简化：</h2>
+    <pre>
+    处理前：
+        var a=['test',1,s];
+        b=a[0];
+    处理后：
+        b='test';
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="NumListReduce_info"></textarea>
+    <div class="button">
+        <button class="NumListReduce btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.NumListReduce').click(function () {
+            let mes = $('.NumListReduce_info').val();
+            if (mes != null) {
+                $('.NumListReduce_table').css('display', '');
+                $('.copy_NumListReduce').css('display', '');
+                $('.NumListReduce_text').text(NumListReduce(mes))
+            }
+        });
+    </script>
+    <table class="NumListReduce_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="NumListReduce_text">*</td>
+        </tr>
+        <button class="copy_NumListReduce" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_NumListReduce').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.NumListReduce_text')[0].innerText
                 textarea.value = mes
                 document.body.appendChild(textarea);
                 textarea.select();
