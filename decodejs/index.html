@@ -433,3 +433,318 @@ permalink: /decodejs/
 </div>
 
 
+<div style="display: inline-block; margin-left: 20%">
+    <h2>成员表达式连接符变更：</h2>
+    <pre>
+    处理前：
+        console.log('12');
+    处理后：
+        console['log']('12');
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="member_info"></textarea>
+    <div class="button">
+        <button class="member btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.member').click(function () {
+            let mes = $('.member_info').val();
+            if (mes != null) {
+                $('.member_table').css('display', '');
+                $('.copy_member').css('display', '');
+                $('.member_text').text(member(mes))
+            }
+        });
+    </script>
+    <table class="member_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="member_text">*</td>
+        </tr>
+        <button class="copy_member" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_member').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.member_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>标识符简化：</h2>
+    <pre>
+    处理前：
+        let a=1;
+        let b=2;
+        let c=a+b;
+    解释：a,b被c使用，保留，c定义后，没有被使用，删除
+    处理后：
+        let a=1;
+        let b=2;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="DelIdent_info"></textarea>
+    <div class="button">
+        <button class="DelIdent btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.DelIdent').click(function () {
+            let mes = $('.DelIdent_info').val();
+            if (mes != null) {
+                $('.DelIdent_table').css('display', '');
+                $('.copy_DelIdent').css('display', '');
+                $('.DelIdent_text').text(DelIdent(mes))
+            }
+        });
+    </script>
+    <table class="DelIdent_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="DelIdent_text">*</td>
+        </tr>
+        <button class="copy_DelIdent" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_DelIdent').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.DelIdent_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>反控制流平坦化：</h2>
+    <pre>
+    实现目的：反控制流平坦化
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="replaceWhile_info"></textarea>
+    <div class="button">
+        <button class="replaceWhile btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.replaceWhile').click(function () {
+            let mes = $('.replaceWhile_info').val();
+            if (mes != null) {
+                $('.replaceWhile_table').css('display', '');
+                $('.copy_replaceWhile').css('display', '');
+                $('.replaceWhile_text').text(replaceWhile(mes))
+            }
+        });
+    </script>
+    <table class="replaceWhile_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="replaceWhile_text">*</td>
+        </tr>
+        <button class="copy_replaceWhile" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_replaceWhile').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.replaceWhile_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>花指令处理：</h2>
+    <pre>
+    处理前：
+        var _0xb28de8 = {
+          "abcd": function (_0x22293f, _0x5a165e) {
+            return _0x22293f == _0x5a165e;
+          },
+          "dbca": function (_0xfbac1e, _0x23462f, _0x556555) {
+            return _0xfbac1e(_0x23462f, _0x556555);
+          },
+          "aaa": function (_0x57e640) {
+            return _0x57e640();
+          },
+          "bbb": "eee"
+        };
+        var aa = _0xb28de8["abcd"](123, 456);
+        var bb = _0xb28de8["dbca"](bcd, 11, 22);
+        var cc = _0xb28de8["aaa"](dcb);
+    处理后：
+        var aa = 123 == 456;
+        var bb = bcd(11, 22);
+        var cc = dcb();
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="callToStr_info"></textarea>
+    <div class="button">
+        <button class="callToStr btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.callToStr').click(function () {
+            let mes = $('.callToStr_info').val();
+            if (mes != null) {
+                $('.callToStr_table').css('display', '');
+                $('.copy_callToStr').css('display', '');
+                $('.callToStr_text').text(callToStr(mes))
+            }
+        });
+    </script>
+    <table class="callToStr_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="callToStr_text">*</td>
+        </tr>
+        <button class="copy_callToStr" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_callToStr').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.callToStr_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>自执行实参替换形参：</h2>
+    <pre>
+    处理前：
+        (function(_0xb28de8) {
+            _0xb28de8.bbb = ccc;
+        }(window))
+    处理后：
+        (function() {
+            window.bbb = ccc;
+        }())
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="convParam_info"></textarea>
+    <div class="button">
+        <button class="convParam btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.convParam').click(function () {
+            let mes = $('.convParam_info').val();
+            if (mes != null) {
+                $('.convParam_table').css('display', '');
+                $('.copy_convParam').css('display', '');
+                $('.convParam_text').text(convParam(mes))
+            }
+        });
+    </script>
+    <table class="convParam_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="convParam_text">*</td>
+        </tr>
+        <button class="copy_convParam" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_convParam').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.convParam_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>自执行空实参替换顺序语句：</h2>
+    <pre>
+    处理前：
+        (function() {
+            b = 123;
+            c = 456;
+        }())
+    处理后：
+        b = 123;
+        c = 456;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="delConvParam_info"></textarea>
+    <div class="button">
+        <button class="delConvParam btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.delConvParam').click(function () {
+            let mes = $('.delConvParam_info').val();
+            if (mes != null) {
+                $('.delConvParam_table').css('display', '');
+                $('.copy_delConvParam').css('display', '');
+                $('.delConvParam_text').text(delConvParam(mes))
+            }
+        });
+    </script>
+    <table class="delConvParam_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="delConvParam_text">*</td>
+        </tr>
+        <button class="copy_delConvParam" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_delConvParam').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.delConvParam_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
