@@ -1,0 +1,85 @@
+---
+layout: page
+title: chatGPT
+permalink: /chatGPT/
+---
+
+
+<head>
+    <style>
+        .chat-container {
+            /*width: 1000px;*/
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .chat-box {
+            background-color: lightgray;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .chat-message {
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .user-message {
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-left: 40%;
+        }
+
+        .bot-message {
+            background-color: skyblue;
+            padding: 10px;
+            border-radius: 10px;
+            margin-right: 40%;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h3>文档和UI正在编写中</h3>
+<h5>API_KEY</h5>
+<input id="key" placeholder="API_KEY"><br>
+<h5>模型类型</h5>
+<select id="model">
+    <option value="text-davinci-003">text-davinci-003</option>
+    <option value="text-curie-001">text-curie-001</option>
+    <option value="text-babbage-001">text-babbage-001</option>
+    <option value="text-ada-001">text-ada-001</option>
+</select>
+<h5>最大输入长度</h5>
+<input id="max_tokens" value="2048">
+<h5>这个值越高结果越随机</h5>
+<input id="temperature" value="0.2">
+<h5></h5>
+<input id="top_p" value="1.0">
+<h5>存在惩罚</h5>
+<input id="presence_penalty" value="0.0">
+<h5>频率惩罚</h5>
+<input id="frequency_penalty" value="0.0">
+<h5>本地服务器端口</h5>
+<input id="port" value="7546">
+
+
+<div class="chat-container">
+    <div class="chat-box">
+        <div id="chat-log" class="chat-message">
+        </div>
+        <div class="chat-message">
+            <input id="chat-input" type="text" placeholder="输入要问的内容">
+            <button id="chat-button">发送</button>
+            <button id="clear-button">清除聊天记录</button>
+        </div>
+        </input>
+    </div>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/chagpt.js"></script>
+</body>
+
+
+
+

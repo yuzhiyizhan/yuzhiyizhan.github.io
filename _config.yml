@@ -38,6 +38,8 @@ navigation:
     url: /v
   - name: V神混淆
     url: /v_ob
+  - name: chatGPT
+    url: /chatGPT
 
 
 # Pagination
