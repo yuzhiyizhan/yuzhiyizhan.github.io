@@ -748,3 +748,349 @@ permalink: /decodejs/
     </table>
 </div>
 
+<div style="display: inline-block; margin-left: 20%">
+    <h2>大数组解密：</h2>
+    <pre>
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="decrypt_arr_info"></textarea>
+    <div class="button">
+        <button class="decrypt_arr btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.decrypt_arr').click(function () {
+            let mes = $('.decrypt_arr_info').val();
+            if (mes != null) {
+                $('.decrypt_arr_table').css('display', '');
+                $('.copy_decrypt_arr').css('display', '');
+                $('.decrypt_arr_text').text(decrypt_arr(mes))
+            }
+        });
+    </script>
+    <table class="decrypt_arr_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="decrypt_arr_text">*</td>
+        </tr>
+        <button class="copy_decrypt_arr" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_decrypt_arr').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.decrypt_arr_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>未修改常量替换：</h2>
+    <pre>
+    处理前：
+        let a=1;
+        let b=2;
+        let c=a+b;
+    处理后：
+        let c=1+2;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="VarReplace_info"></textarea>
+    <div class="button">
+        <button class="VarReplace btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.VarReplace').click(function () {
+            let mes = $('.VarReplace_info').val();
+            if (mes != null) {
+                $('.VarReplace_table').css('display', '');
+                $('.copy_VarReplace').css('display', '');
+                $('.VarReplace_text').text(VarReplace(mes))
+            }
+        });
+    </script>
+    <table class="VarReplace_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="VarReplace_text">*</td>
+        </tr>
+        <button class="copy_VarReplace" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_VarReplace').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.VarReplace_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>标识符重复赋值：</h2>
+    <pre>
+    处理前：
+        let a=3;
+        let b=a;
+        let c=b;
+        let d=c;
+    处理后：
+        let a = 3;
+        let d = a;
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="ReIdent_info"></textarea>
+    <div class="button">
+        <button class="ReIdent btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.ReIdent').click(function () {
+            let mes = $('.ReIdent_info').val();
+            if (mes != null) {
+                $('.ReIdent_table').css('display', '');
+                $('.copy_ReIdent').css('display', '');
+                $('.ReIdent_text').text(ReIdent(mes))
+            }
+        });
+    </script>
+    <table class="ReIdent_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="ReIdent_text">*</td>
+        </tr>
+        <button class="copy_ReIdent" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_ReIdent').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.ReIdent_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>禁用console输出功能删减：</h2>
+    <pre>
+    目的：删除ob混淆中禁用console输出功能的代码
+    ['log', "warn", "info", 'error', "exception", "table", "trace"]
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="DelConsole_one_info"></textarea>
+    <div class="button">
+        <button class="DelConsole_one btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.DelConsole_one').click(function () {
+            let mes = $('.DelConsole_one_info').val();
+            if (mes != null) {
+                $('.DelConsole_one_table').css('display', '');
+                $('.copy_DelConsole_one').css('display', '');
+                $('.DelConsole_one_text').text(DelConsole_one(mes))
+            }
+        });
+    </script>
+    <table class="DelConsole_one_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="DelConsole_one_text">*</td>
+        </tr>
+        <button class="copy_DelConsole_one" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_DelConsole_one').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.DelConsole_one_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>对象属性字符合并：</h2>
+    <pre>
+    实现目的：对象属性字符合并(花指令处理前的准备工作之一)
+    处理前：
+    let aa={
+        'bb':'ds'+'das',
+    }
+    处理后：
+    let aa = {
+      'bb': "dsdas",
+    };
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="AddObjPro_info"></textarea>
+    <div class="button">
+        <button class="AddObjPro btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.AddObjPro').click(function () {
+            let mes = $('.AddObjPro_info').val();
+            if (mes != null) {
+                $('.AddObjPro_table').css('display', '');
+                $('.copy_AddObjPro').css('display', '');
+                $('.AddObjPro_text').text(AddObjPro(mes))
+            }
+        });
+    </script>
+    <table class="AddObjPro_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="AddObjPro_text">*</td>
+        </tr>
+        <button class="copy_AddObjPro" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_AddObjPro').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.AddObjPro_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>序列表达式：</h2>
+    <pre>
+    实现目的：序列表达式还原(禁用debugger处理前准备工作)
+    处理前：
+    (function () {}(), console['log']('Hello\x20World!'));
+    处理后：
+    (function () {}());
+    console['log']('Hello\x20World!');
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="remove_comma_info"></textarea>
+    <div class="button">
+        <button class="remove_comma btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.remove_comma').click(function () {
+            let mes = $('.remove_comma_info').val();
+            if (mes != null) {
+                $('.remove_comma_table').css('display', '');
+                $('.copy_remove_comma').css('display', '');
+                $('.remove_comma_text').text(remove_comma(mes))
+            }
+        });
+    </script>
+    <table class="remove_comma_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="remove_comma_text">*</td>
+        </tr>
+        <button class="copy_remove_comma" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_remove_comma').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.remove_comma_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="display: inline-block; margin-left: 20%">
+    <h2>debugger保护及定时器删减：</h2>
+    <pre>
+    目的：删除ob混淆中debugger保护及定时器代码
+    </pre>
+    <textarea placeholder="这里放入待解混淆内容" name="reworkmes" cols="80" rows="2" style="OVERFLOW:   hidden"
+              class="del_setInterval_info"></textarea>
+    <div class="button">
+        <button class="del_setInterval btn btn-default">解密</button>
+    </div>
+    <script>
+        $('.del_setInterval').click(function () {
+            let mes = $('.del_setInterval_info').val();
+            if (mes != null) {
+                $('.del_setInterval_table').css('display', '');
+                $('.copy_del_setInterval').css('display', '');
+                $('.del_setInterval_text').text(del_setInterval(mes))
+            }
+        });
+    </script>
+    <table class="del_setInterval_table" style="display: none">
+        <tbody>
+        <tr>
+            <td>结果</td>
+            <td class="del_setInterval_text">*</td>
+        </tr>
+        <button class="copy_del_setInterval" style="display: none">
+            复制
+        </button>
+        <script>
+            $('.copy_del_setInterval').click(function () {
+                const textarea = document.createElement('textarea');
+                let mes = $('.del_setInterval_text')[0].innerText
+                textarea.value = mes
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('复制成功！');
+            })
+        </script>
+        </tbody>
+    </table>
+</div>
+
+

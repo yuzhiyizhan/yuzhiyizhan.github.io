@@ -525,8 +525,9 @@ function convParam(jscode) {
     return code
 }
 
-function delConvParam(jscode){
+function delConvParam(jscode) {
     let ast = parser.parse(jscode)
+
     function delConvParams(path) {
         // 替换空参数的自执行方法为顺序语句
         let node = path.node;//路径节点
@@ -538,16 +539,16 @@ function delConvParam(jscode){
         //实参列表为空且长度不大于0
         if (node.expression.arguments !== undefined && node.expression.arguments.length > 0)
             return;
-        if(t.isUnaryExpression(node_exp)&&node_exp.operator=='!'){//第二种自执行修改为第一种类型
-            node_exp=node_exp.argument;
+        if (t.isUnaryExpression(node_exp) && node_exp.operator == '!') {//第二种自执行修改为第一种类型
+            node_exp = node_exp.argument;
         }
         if (t.isCallExpression(node_exp)) {//第一种自执行
             if (!t.isFunctionExpression(node_exp.callee))//函数表达式判断
                 return;
-            let paramsList=node_exp.callee.params//形参列表
-            if(paramsList.length>0){
-                paramsList.map(function (letname){
-                    if(t.isIdentifier(letname)){
+            let paramsList = node_exp.callee.params//形参列表
+            if (paramsList.length > 0) {
+                paramsList.map(function (letname) {
+                    if (t.isIdentifier(letname)) {
                         //定义一个变量，并添加到结构体中
                         let varDec = t.VariableDeclarator(t.identifier(letname.name))//
                         let localAST = t.VariableDeclaration('var', [varDec]);//
@@ -560,10 +561,399 @@ function delConvParam(jscode){
         }
 
     }
+
     traverse(ast, {ExpressionStatement: delConvParams,})      // 替换空参数的自执行方法为顺序语句
 
-    let {code} = generator(ast,opts = {jsescOption:{"minimal":true}})
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
     return code
+}
+
+function decrypt_arr(jscode) {
+    let ast = parser.parse(jscode)
+
+    function decrypt_arrs(ast) {
+        //TODO 1 解密三部分的代码执行
+        let end = 3;//切片需要处理的代码块
+        let newAst = parser.parse('');//新建ast
+        let decrypt_code = ast.program.body.slice(0, end);//切片
+        newAst.program.body = decrypt_code// 将前3个节点替换进新建ast
+        let stringDecryptFunc = generator(newAst, {compact: true},).code;//转为js，由于存在格式化检测，需要指定选项，来压缩代码// 自动转义
+        eval(stringDecryptFunc);//执行三部分的代码
+
+
+        //TODO 2 准备工作及对解密三部分节点删除
+        let stringDecryptFuncAst = ast.program.body[end - 1];// 拿到解密函数所在的节点
+        let DecryptFuncName = stringDecryptFuncAst.declarations[0].id.name;//拿到解密函数的名字
+        var rest_code = ast.program.body.slice(end); // 剩下的节点
+        ast.program.body = rest_code;//剩下的节点替换
+
+
+        //TODO 3 加密数组还原
+        traverse(ast, {
+            CallExpression(path) {//回调表达式匹配--替换加密数组为对应的值
+                if (t.isIdentifier(path.node.callee, {name: DecryptFuncName})) {       //当变量名与解密函数名相同时，就执行相应操作
+                    // console.log(path.toString());
+                    // console.log(eval(path.toString()));
+                    path.replaceWith(t.valueToNode(eval(path.toString())));      // 值替换节点
+                }
+            },
+        });
+        // ast = add_Mem_str(ast)//成员表达式中字符合并
+        return ast;
+
+    }
+
+    ast = decrypt_arrs(ast)//大数组还原
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code
+
+}
+
+
+function VarReplace(jscode) {
+    let ast = parser.parse(jscode)
+
+    function VarReplaces(path) {
+        // 常量替换
+        let node = path.node;//路径节点
+        if (!t.isIdentifier(node.id)) return;//标识符判定
+        //过滤条件
+        if (!t.isStringLiteral(node.init) && !t.isNumericLiteral(node.init) && !t.isUnaryExpression(node.init) && !t.isIdentifier(node.init)) return;
+
+        let name = node.id.name//变量名称
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(name);//
+
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        let path_sum = 0;// 路径处理计数
+        paths.map(function (refer_path) {
+            if (!t.isIdentifier(refer_path)) return; //标识符判定
+            refer_path.node.name = generator(node.init).code;     //标识符重命名
+            path_sum += 1;                                             //路径计数+1
+        });
+        if (path_sum == paths.length) {         //所有相关路径都处理，删除路径
+            path.remove();
+        }
+
+    }
+
+    traverse(ast, {VariableDeclarator: VarReplaces,})      // 未修改常量替换
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code
+}
+
+function ReIdent(jscode) {
+    let ast = parser.parse(jscode);
+
+    function ReIdents(path) {
+        // 标识符简化
+        let node = path.node;//获取路径节点
+        if (!t.isIdentifier(node.id) || !t.isIdentifier(node.init)) return;
+
+        let leftName = node.id.name;//函数名称
+        let rightName = node.init.name;//函数名称
+
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(leftName);//获取绑定
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        let paths_sums = 0;
+        paths.map(function (refer_path) {
+            refer_path.node.name = rightName;//标识符重命名
+            paths_sums += 1;//路径+1
+        });
+        if (paths_sums == paths.length && paths_sums != 0) {//若绑定的每个路径都已处理 ，则移除当前路径
+            path.remove();//删除路径
+        }
+    }
+
+//标识符-重复赋值
+    traverse(ast, {VariableDeclarator: {exit: [ReIdents]},});
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code;
+}
+
+function DelConsole_one(jscode) {
+    let ast = parser.parse(jscode);
+
+    function DelConsole_ones(path) {
+        // 删除console
+        let node = path.node;//获取路径节点
+        if (!t.isCallExpression(node.init)) return;//不是回调表达式，退出
+        if (node.init.arguments.length !== 2) return;//形参不等于2个
+        if (!t.isThisExpression(node.init.arguments[0])) return;//this表达式
+        let thisname = node.id.name;//节点名称
+
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(thisname);//获取绑定
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        paths.map(function (refer_path) {
+            let bindpath = refer_path.parentPath;//父路径
+            if (!t.isCallExpression(bindpath)) return;//回调表达式判断
+            if (!t.isIdentifier(bindpath.node.callee)) return;//标识符判定
+            bindpath.remove();//删除路径
+        });
+        path.remove();//删除路径
+    }
+
+    function DelConsole_twos(path) {
+        // 删除console遗留下列未使用的定义变量
+        let node = path.node;//获取路径节点
+        if (!t.isCallExpression(node.init)) return;//不是回调表达式，退出
+        if (node.init.arguments.length !== 0) return;//形参不等于0个
+        if (!t.isFunctionExpression(node.init.callee)) return;//this表达式
+        let thisname = node.id.name;//节点名称
+
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(thisname);//获取绑定
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        if (paths.length !== 0) return;
+
+        path.remove();//删除路径
+    }
+
+    ast = parser.parse(generator(ast).code)//刷新ast
+    traverse(ast, {VariableDeclarator: {exit: [DelConsole_ones]},});
+    ast = parser.parse(generator(ast).code)//刷新ast
+    traverse(ast, {VariableDeclarator: {exit: [DelConsole_twos]},});
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code;
+}
+
+
+function AddObjPro(jscode) {
+    let ast = parser.parse(jscode);
+
+    function AddObjPro(path) {
+        if (t.isBinaryExpression(path.node.value)) {
+            let BinNode = path.node.value;//属性节点
+            if (!t.isBinaryExpression(BinNode)) return;//二相式表达式验证
+            try {
+                path.node.value = t.StringLiteral(eval(generator(BinNode).code));      // 值替换节点
+            } catch (e) {
+            }
+        }
+    }
+
+    traverse(ast, {ObjectProperty: {exit: [AddObjPro]},});  //对象属性字符合并
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code;
+}
+
+function remove_comma(jscode) {
+    let ast = parser.parse(jscode);
+
+    function remove_commas(path) {
+        // 序列表达式还原
+        let {expression} = path.node
+        if (!t.isSequenceExpression(expression))
+            return;
+        let body = []
+        expression.expressions.forEach(
+            express => {
+                body.push(t.expressionStatement(express))
+            }
+        )
+        path.replaceInline(body)
+    }
+
+    traverse(ast, {ExpressionStatement: remove_commas,});        // 序列表达式还原
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code;
+}
+
+
+function del_setInterval(jscode) {
+    let ast = parser.parse(jscode);
+
+    function remove_comma(path) {
+        // 去除序列表达式逗号
+        let {expression} = path.node
+        if (!t.isSequenceExpression(expression))
+            return;
+        let body = []
+        expression.expressions.forEach(
+            express => {
+                body.push(t.expressionStatement(express))
+            }
+        )
+        path.replaceInline(body)
+    }
+
+    traverse(ast, {ExpressionStatement: remove_comma,});        // 序列表达式还原
+
+    function del_setInterval(path) {
+        // 将对象进行替换
+        var node = path.node;//获取路径节点
+
+        if (!t.isIdentifier(node.callee))//不是标识符则退出
+            return;
+        if (node.callee.name != 'setInterval') return;//不是定时器退出
+        if (node.arguments.length !== 2) return;
+        if (!t.isFunctionExpression(node.arguments[0]) || node.arguments[0].params.length !== 0) return;
+        let InterNode = node.arguments[0].body.body[0];
+        if (!t.isExpressionStatement(InterNode)) return;
+        if (!t.isCallExpression(InterNode.expression)) return;
+        if (!t.isIdentifier(InterNode.expression.callee)) return;
+        let InterName = InterNode.expression.callee.name;
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(InterName);//
+
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+
+        let paths = binding.referencePaths;//绑定引用的路径
+
+        // if(paths.length==0)return;//引用路径必须等于1
+        let paths_sums = 0;//路径计数
+
+        paths.map(function (refer_path) {
+            let bindpath = refer_path.parentPath;//父路径
+            let break_sign = true;//while循环控制
+
+            while (break_sign) {
+                try {
+                    bindpath.remove();//路径删除
+                    paths_sums += 1;//处理数+1
+                    break_sign = false;//while循环终止
+                } catch (e) {
+                    bindpath = bindpath.parentPath;
+                }
+            }
+
+        });
+        if (paths_sums == paths.length) {//若绑定的每个路径都已处理 ，则移除当前路径
+            path.remove();//删除路径
+        }
+    }
+
+    traverse(ast, {CallExpression: {exit: [del_setInterval]},});  // 删减定时器
+
+
+    function DelDebuger_one(path) {
+        // 将对象进行替换
+        var node = path.node;//获取路径节点
+        if (!t.isCallExpression(node.init)) return;//回调表达式过滤
+        if (node.init.arguments.length !== 0) return;//实参个数为0
+        if (!t.isFunctionExpression(node.init.callee)) return;//函数表达式过滤
+        if (node.init.callee.params.length !== 0) return;//形参个数过滤
+        let varName = node.id.name;//定义的变量名称
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(varName);//
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        let paths_sums = 0;//路径计数
+        paths.map(function (refer_path) {
+            let bindpath = refer_path.parentPath;//父路径
+            let BinNode = bindpath.node;//获取路径节点
+            if (!t.isCallExpression(BinNode)) return;//不是回调表达式，退出
+            if (BinNode.arguments.length !== 2) return;//形参不等于2个
+            if (!t.isThisExpression(BinNode.arguments[0])) return;//this表达式
+            let thisname = BinNode.callee.name;//节点名称
+            if (thisname !== varName) return;//二次确认，名称不等退出
+            let break_sign = true;//while循环控制
+
+            while (break_sign) {
+                try {
+                    bindpath.remove();//路径删除
+                    paths_sums += 1;//处理数+1
+                    break_sign = false;//while循环终止
+                } catch (e) {
+                    bindpath = bindpath.parentPath;
+                }
+            }
+        });
+        if (paths_sums == paths.length) {//若绑定的每个路径都已处理 ，则移除当前路径
+            path.remove();//删除路径
+        }
+    }
+
+    traverse(ast, {VariableDeclarator: {exit: [DelDebuger_one]}});  //禁用debugger删减
+
+    function DelDebuger_two(path) {
+        //删减deugger未引用的函数
+        var node = path.node;//获取路径节点
+
+        let varName = node.id.name;//定义的变量名称
+
+        let scope = path.scope;//获取路径的作用域
+        let binding = scope.getBinding(varName);//
+
+        if (!binding || binding.constantViolations.length > 0) {//检查该变量的值是否被修改--一致性检测
+            return;
+        }
+        let paths = binding.referencePaths;//绑定引用的路径
+        if (paths.length !== 0) return;//引用路径必须等于1
+
+        path.remove();//删除路径
+
+
+    }
+
+    ast = parser.parse(generator(ast).code);
+    traverse(ast, {FunctionDeclaration: {enter: [DelDebuger_two]}});  //禁用debugger删减
+
+
+    function delConvParam(path) {
+        // 替换空参数的自执行方法为顺序语句
+        let node = path.node;//路径节点
+        let node_exp = node.expression;//节点表达式
+
+        //回调表达式|一元表达式
+        if (!t.isCallExpression(node_exp) && !t.isUnaryExpression(node_exp))
+            return;
+        //实参列表为空且长度不大于0
+        if (node.expression.arguments !== undefined && node.expression.arguments.length > 0)
+            return;
+        if (t.isUnaryExpression(node_exp) && node_exp.operator == '!') {//第二种自执行修改为第一种类型
+            node_exp = node_exp.argument;
+        }
+        if (t.isCallExpression(node_exp)) {//第一种自执行
+            if (!t.isFunctionExpression(node_exp.callee))//函数表达式判断
+                return;
+            let paramsList = node_exp.callee.params//形参列表
+            if (paramsList.length > 0) {
+                paramsList.map(function (letname) {
+                    if (t.isIdentifier(letname)) {
+                        //定义一个变量，并添加到结构体中
+                        let varDec = t.VariableDeclarator(t.identifier(letname.name))//
+                        let localAST = t.VariableDeclaration('var', [varDec]);//
+                        node_exp.callee.body.body.unshift(localAST);//添加
+                    }
+                })
+            }
+            // 替换节点
+            path.replaceInline(node_exp.callee.body.body);
+        }
+
+    }
+
+    traverse(ast, {ExpressionStatement: delConvParam,})      // 替换空参数的自执行方法为顺序语句
+
+
+    let {code} = generator(ast, opts = {jsescOption: {"minimal": true}})
+    return code;
+
 }
 
 
