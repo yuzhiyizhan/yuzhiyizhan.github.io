@@ -64,6 +64,45 @@ permalink: /chatGPT/
 <h5>本地服务器端口</h5>
 <input id="port" value="7546">
 
+<br></br>
+<button id="download-button">python后端</button>
+<script>document.getElementById("download-button").addEventListener("click", function () {
+    // 文件的 URL
+    var fileURL = "/file/python.zip";
+    var a = document.createElement("a");
+    a.href = fileURL;
+    a.download = "python.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});</script>
+
+<br></br>
+<button id="download-button-js">JS后端</button>
+<script>document.getElementById("download-button-js").addEventListener("click", function () {
+    // 文件的 URL
+    var fileURL = "/file/JS.zip";
+    var a = document.createElement("a");
+    a.href = fileURL;
+    a.download = "JS.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});</script>
+
+<br></br>
+<button id="download-button-go">go后端</button>
+<script>document.getElementById("download-button-go").addEventListener("click", function () {
+    // 文件的 URL
+    var fileURL = "/file/go.zip";
+    var a = document.createElement("a");
+    a.href = fileURL;
+    a.download = "go.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});</script>
+
 
 <div class="chat-container">
     <div class="chat-box">
