@@ -7,6 +7,22 @@ permalink: /chatGPT/
 
 <head>
     <style>
+        input{
+            outline-style: none ;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 13px 14px;
+            /*width: 620px;*/
+            /*font-size: 14px;*/
+            /*font-weight: 700;*/
+            font-family: "Microsoft soft";
+        }
+        input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+        }
         .chat-container {
             /*width: 1000px;*/
             margin: 0 auto;
@@ -38,71 +54,168 @@ permalink: /chatGPT/
             margin-right: 40%;
             color: white;
         }
+        .container {
+            display: flex;
+            justify-content: flex-star;
+            /*width: 10%;*/
+            /*height: 10%;*/
+        }
+        .container ul{
+            list-style-type: none;
+            display: flex;
+            flex-wrap: wrap;
+            padding-bottom: 10px;
+            line-height: 36px;
+            padding-left: 0;
+        }
+        .container li {
+            padding: 0 15px 0 10px;
+            margin: 0 10px 0 0;
+            cursor: pointer;
+        }
+        @property --d{
+            syntax: '<angle>';
+            inherits: true;
+            initial-value: 0deg;
+        }
+        button{
+            /* 相对定位 */
+            position: relative;
+            /*width: 400px;*/
+            /*height: 100px;*/
+            /*line-height: 100px;*/
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+
+            color: #fff;
+            /* 渐变背景 */
+            background: linear-gradient(to right,#03a9f4,#f441a5,#ffeb3b,#09a8f4);
+            /* 背景渐变色大小 */
+            background-size: 400%;
+            /* 圆角 */
+            border-radius: 50px;
+            z-index: 1;
+        }
+        /* 发光效果 */
+        button::before{
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            bottom: -5px;
+            right: -5px;
+            /* 渐变背景 */
+
+            /* 背景渐变色大小 */
+            background-size: 400%;
+            /* 圆角 */
+            border-radius: 50px;
+            /* 位于按钮之下 */
+            z-index: -1;
+            /* 设置模糊度 显示发光效果 */
+            filter: blur(20px);
+        }
+        /* 鼠标移入执行动画 */
+        button:hover{
+            /* 动画：名称 时间 infinite是无限次播放 */
+            animation: streamer 8s infinite;
+        }
+        button:hover::before{
+            animation: streamer 8s infinite;
+        }
+        /* 接下来定义动画 */
+        @keyframes streamer{
+            100%{
+                /* 背景位置 */
+                background-position: -400% 0;
+            }
+        }
     </style>
+
 </head>
 <body>
-<h3>文档和UI正在编写中</h3>
-<h5>API_KEY</h5>
-<input id="key" placeholder="API_KEY"><br>
-<h5>模型类型</h5>
-<select id="model">
-    <option value="text-davinci-003">text-davinci-003</option>
-    <option value="text-curie-001">text-curie-001</option>
-    <option value="text-babbage-001">text-babbage-001</option>
-    <option value="text-ada-001">text-ada-001</option>
-</select>
-<h5>最大输入长度</h5>
-<input id="max_tokens" value="2048">
-<h5>这个值越高结果越随机</h5>
-<input id="temperature" value="0.2">
-<h5></h5>
-<input id="top_p" value="1.0">
-<h5>存在惩罚</h5>
-<input id="presence_penalty" value="0.0">
-<h5>频率惩罚</h5>
-<input id="frequency_penalty" value="0.0">
-<h5>本地服务器端口</h5>
-<input id="port" value="7546">
 
-<br></br>
-<button id="download-button">python后端</button>
-<script>document.getElementById("download-button").addEventListener("click", function () {
-    // 文件的 URL
-    var fileURL = "/file/python.zip";
-    var a = document.createElement("a");
-    a.href = fileURL;
-    a.download = "python.zip";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-});</script>
-
-<br></br>
-<button id="download-button-js">JS后端</button>
-<script>document.getElementById("download-button-js").addEventListener("click", function () {
-    // 文件的 URL
-    var fileURL = "/file/JS.zip";
-    var a = document.createElement("a");
-    a.href = fileURL;
-    a.download = "JS.zip";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-});</script>
-
-<br></br>
-<button id="download-button-go">go后端</button>
-<script>document.getElementById("download-button-go").addEventListener("click", function () {
-    // 文件的 URL
-    var fileURL = "/file/go.zip";
-    var a = document.createElement("a");
-    a.href = fileURL;
-    a.download = "go.zip";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-});</script>
-
+<div class="container">
+    <ul>
+        <li>
+            <h3>文档和UI正在编写中</h3>
+            <h5>API_KEY</h5>
+            <input id="key" class="key" placeholder="API_KEY"><br>
+        </li>
+        <li>
+            <h5>模型类型</h5>
+            <select id="model" class="model">
+                <option value="text-davinci-003">text-davinci-003</option>
+                <option value="text-curie-001">text-curie-001</option>
+                <option value="text-babbage-001">text-babbage-001</option>
+                <option value="text-ada-001">text-ada-001</option>
+            </select>
+        </li>
+        <li>
+            <h5>最大输入长度</h5>
+            <input id="max_tokens" value="2048">
+        </li>
+        <li>
+            <h5>这个值越高结果越随机</h5>
+            <input id="temperature" value="0.2">
+        </li>
+        <li>
+            <h5>我也不知道这啥</h5>
+            <input id="top_p" value="1.0">
+        </li>
+        <li>
+            <h5>存在惩罚</h5>
+            <input id="presence_penalty" value="0.0">
+        </li>
+        <li>
+            <h5>频率惩罚</h5>
+            <input id="frequency_penalty" value="0.0">
+        </li>
+        <li>
+            <h5>本地服务器端口</h5>
+            <input id="port" value="7546">
+        </li>
+        <li>
+            <button id="download-button">python后端</button>
+            <script>document.getElementById("download-button").addEventListener("click", function () {
+        // 文件的 URL
+        var fileURL = "/file/python.zip";
+        var a = document.createElement("a");
+        a.href = fileURL;
+        a.download = "python.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });</script>
+        </li>
+        <li>
+            <button id="download-button-js">JS后端</button>
+            <script>document.getElementById("download-button-js").addEventListener("click", function () {
+        // 文件的 URL
+        var fileURL = "/file/JS.zip";
+        var a = document.createElement("a");
+        a.href = fileURL;
+        a.download = "JS.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });</script>
+        </li>
+        <li>
+            <button id="download-button-go">go后端</button>
+            <script>document.getElementById("download-button-go").addEventListener("click", function () {
+        // 文件的 URL
+        var fileURL = "/file/go.zip";
+        var a = document.createElement("a");
+        a.href = fileURL;
+        a.download = "go.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });</script>
+        </li>
+</div>
 
 <div class="chat-container">
     <div class="chat-box">
