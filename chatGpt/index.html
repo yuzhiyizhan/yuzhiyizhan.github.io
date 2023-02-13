@@ -6,22 +6,34 @@ permalink: /chatGPT/
 
 
 <head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <style>
-        input{
-            outline-style: none ;
+        .model{
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
             border: 1px solid #ccc;
-            border-radius: 3px;
-            padding: 13px 14px;
-            /*width: 620px;*/
-            /*font-size: 14px;*/
-            /*font-weight: 700;*/
-            font-family: "Microsoft soft";
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
         }
-        input:focus{
-            border-color: #66afe9;
-            outline: 0;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+        .info-select{
+            width: 200px;
+            outline:none;
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            -ms-appearance:none;
+            /*background: url(img/down.png) no-repeat scroll right center transparent;*/
         }
         .chat-container {
             /*width: 1000px;*/
@@ -78,74 +90,19 @@ permalink: /chatGPT/
             inherits: true;
             initial-value: 0deg;
         }
-        button{
-            /* 相对定位 */
-            position: relative;
-            /*width: 400px;*/
-            /*height: 100px;*/
-            /*line-height: 100px;*/
-            text-align: center;
-            text-decoration: none;
-            text-transform: uppercase;
-
-            color: #fff;
-            /* 渐变背景 */
-            background: linear-gradient(to right,#03a9f4,#f441a5,#ffeb3b,#09a8f4);
-            /* 背景渐变色大小 */
-            background-size: 400%;
-            /* 圆角 */
-            border-radius: 50px;
-            z-index: 1;
-        }
-        /* 发光效果 */
-        button::before{
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            bottom: -5px;
-            right: -5px;
-            /* 渐变背景 */
-
-            /* 背景渐变色大小 */
-            background-size: 400%;
-            /* 圆角 */
-            border-radius: 50px;
-            /* 位于按钮之下 */
-            z-index: -1;
-            /* 设置模糊度 显示发光效果 */
-            filter: blur(20px);
-        }
-        /* 鼠标移入执行动画 */
-        button:hover{
-            /* 动画：名称 时间 infinite是无限次播放 */
-            animation: streamer 8s infinite;
-        }
-        button:hover::before{
-            animation: streamer 8s infinite;
-        }
-        /* 接下来定义动画 */
-        @keyframes streamer{
-            100%{
-                /* 背景位置 */
-                background-position: -400% 0;
-            }
-        }
     </style>
 
 </head>
 <body>
-
 <div class="container">
     <ul>
         <li>
-            <h3>文档和UI正在编写中</h3>
             <h5>API_KEY</h5>
             <input id="key" class="key" placeholder="API_KEY"><br>
         </li>
         <li>
             <h5>模型类型</h5>
-            <select id="model" class="model">
+            <select id="model" class="model info-select">
                 <option value="text-davinci-003">text-davinci-003</option>
                 <option value="text-curie-001">text-curie-001</option>
                 <option value="text-babbage-001">text-babbage-001</option>
